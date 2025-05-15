@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Pressure Abnormality Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e0eafc, #cfdef3 100%);
+            min-height: 100vh;
+        }
+        .main-card {
+            max-width: 800px;
+            margin: 3rem auto;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            background: #fff;
+            padding: 2.5rem 2rem;
+        }
+        .main-card h2 {
+            font-weight: 700;
+            color: #2d3a4b;
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #34495e;
+        }
+        .input-group-text {
+            background: #f0f4f8;
+            border: none;
+        }
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #d1d8e0;
+            background: #f8fafc;
+            transition: box-shadow 0.2s;
+        }
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.2rem #a5d8ff44;
+            border-color: #4a90e2;
+        }
+        .form-control:focus {
+            background: #eaf6ff;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #4a90e2, #007aff);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.75rem 2.5rem;
+            font-size: 1.1rem;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #357abd, #005bb5);
+        }
+        .result-card {
+            display: none;
+            margin-top: 2rem;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .result-card.show {
+            display: block;
+            opacity: 1;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+        .accordion-button:not(.collapsed) {
+            color: #fff;
+            background: linear-gradient(90deg, #4a90e2, #007aff);
+        }
+        .accordion-button {
+            font-weight: 600;
+        }
+        .tooltip-inner {
+            background-color: #4a90e2;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+        @media (max-width: 768px) {
+            .main-card { padding: 1.2rem 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-card">
+        <h2 class="text-center mb-4"><i class="fa-solid fa-heart-pulse text-danger"></i> Blood Pressure Abnormality Predictor</h2>
+        <form id="predictionForm">
+            <div class="accordion" id="featureAccordion">
+                <!-- Demographics Card -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingDemo">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDemo" aria-expanded="true" aria-controls="collapseDemo">
+                            <i class="fa-solid fa-user me-2"></i> Demographics
+                        </button>
+                    </h2>
+                    <div id="collapseDemo" class="accordion-collapse collapse show" aria-labelledby="headingDemo" data-bs-parent="#featureAccordion">
+                        <div class="accordion-body row g-2">
+                            <div class="col-md-6">
+                                <label for="Age" class="form-label">Age (years)</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Age in years"><i class="fa-solid fa-user"></i></span>
+                                    <input type="number" min="18" max="100" class="form-control" id="Age" name="Age" required placeholder="18 - 100">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Gender" class="form-label">Gender</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Gender"><i class="fa-solid fa-venus-mars"></i></span>
+                                    <select class="form-select" id="Gender" name="Gender" required>
+                                        <option value="">Select...</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Height" class="form-label">Height (cm)</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Height in cm"><i class="fa-solid fa-ruler-vertical"></i></span>
+                                    <input type="number" min="100" max="220" class="form-control" id="Height" name="Height" required placeholder="100 - 220">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Weight" class="form-label">Weight (kg)</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Weight in kg"><i class="fa-solid fa-weight-hanging"></i></span>
+                                    <input type="number" min="30" max="200" class="form-control" id="Weight" name="Weight" required placeholder="30 - 200">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Pregnancy" class="form-label">Pregnancy</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Pregnancy status"><i class="fa-solid fa-baby"></i></span>
+                                    <select class="form-select" id="Pregnancy" name="Pregnancy" required>
+                                        <option value="">Select...</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Lifestyle Card -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingLife">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLife" aria-expanded="false" aria-controls="collapseLife">
+                            <i class="fa-solid fa-person-running me-2"></i> Lifestyle
+                        </button>
+                    </h2>
+                    <div id="collapseLife" class="accordion-collapse collapse" aria-labelledby="headingLife" data-bs-parent="#featureAccordion">
+                        <div class="accordion-body row g-2">
+                            <div class="col-md-6">
+                                <label for="Smoking_Status" class="form-label">Smoking Status</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Smoking status"><i class="fa-solid fa-smoking"></i></span>
+                                    <select class="form-select" id="Smoking_Status" name="Smoking_Status" required>
+                                        <option value="">Select...</option>
+                                        <option value="Never">Never</option>
+                                        <option value="Former">Former</option>
+                                        <option value="Current">Current</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Alcohol_Intake" class="form-label">Alcohol Intake (units/week)</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Alcohol intake (units/week)"><i class="fa-solid fa-wine-bottle"></i></span>
+                                    <input type="number" min="0" max="20" class="form-control" id="Alcohol_Intake" name="Alcohol_Intake" required placeholder="0 - 20">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Physical_Activity_Level" class="form-label">Physical Activity Level</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Physical activity level"><i class="fa-solid fa-person-walking"></i></span>
+                                    <select class="form-select" id="Physical_Activity_Level" name="Physical_Activity_Level" required>
+                                        <option value="">Select...</option>
+                                        <option value="Sedentary">Sedentary</option>
+                                        <option value="Light">Light</option>
+                                        <option value="Moderate">Moderate</option>
+                                        <option value="Active">Active</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Salt_Intake" class="form-label">Salt Intake (g/day)</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Salt intake (g/day)"><i class="fa-solid fa-salt-shaker"></i></span>
+                                    <input type="number" min="0" max="20" class="form-control" id="Salt_Intake" name="Salt_Intake" required placeholder="0 - 20">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Sleep_Duration" class="form-label">Sleep Duration (hours)</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Sleep duration (hours)"><i class="fa-solid fa-bed"></i></span>
+                                    <input type="number" min="2" max="12" class="form-control" id="Sleep_Duration" name="Sleep_Duration" required placeholder="2 - 12">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Stress_Level" class="form-label">Stress Level (1-10)</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Stress level (1-10)"><i class="fa-solid fa-brain"></i></span>
+                                    <input type="number" min="1" max="10" class="form-control" id="Stress_Level" name="Stress_Level" required placeholder="1 - 10">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Lab Results Card -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingLab">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLab" aria-expanded="false" aria-controls="collapseLab">
+                            <i class="fa-solid fa-flask-vial me-2"></i> Lab Results
+                        </button>
+                    </h2>
+                    <div id="collapseLab" class="accordion-collapse collapse" aria-labelledby="headingLab" data-bs-parent="#featureAccordion">
+                        <div class="accordion-body row g-2">
+                            <div class="col-md-6">
+                                <label for="Level_of_Hemoglobin" class="form-label">Hemoglobin Level (g/dL)</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Hemoglobin level (g/dL)"><i class="fa-solid fa-vial"></i></span>
+                                    <input type="number" step="any" min="7" max="20" class="form-control" id="Level_of_Hemoglobin" name="Level_of_Hemoglobin" required placeholder="7 - 20">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Cholesterol" class="form-label">Cholesterol (mg/dL)</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Cholesterol (mg/dL)"><i class="fa-solid fa-droplet"></i></span>
+                                    <input type="number" min="100" max="400" class="form-control" id="Cholesterol" name="Cholesterol" required placeholder="100 - 400">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Glucose" class="form-label">Glucose (mg/dL)</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Glucose (mg/dL)"><i class="fa-solid fa-syringe"></i></span>
+                                    <input type="number" min="50" max="300" class="form-control" id="Glucose" name="Glucose" required placeholder="50 - 300">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="BMI" class="form-label">BMI (kg/m²)</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="BMI (kg/m²)"><i class="fa-solid fa-weight-scale"></i></span>
+                                    <input type="number" min="10" max="60" class="form-control" id="BMI" name="BMI" required placeholder="10 - 60">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Heart_Rate" class="form-label">Heart Rate (bpm)</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Heart rate (bpm)"><i class="fa-solid fa-heart"></i></span>
+                                    <input type="number" min="40" max="200" class="form-control" id="Heart_Rate" name="Heart_Rate" required placeholder="40 - 200">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Medical History Card -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingMed">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMed" aria-expanded="false" aria-controls="collapseMed">
+                            <i class="fa-solid fa-notes-medical me-2"></i> Medical History
+                        </button>
+                    </h2>
+                    <div id="collapseMed" class="accordion-collapse collapse" aria-labelledby="headingMed" data-bs-parent="#featureAccordion">
+                        <div class="accordion-body row g-2">
+                            <div class="col-md-6">
+                                <label for="Genetic_Pedigree_Coefficient" class="form-label">Genetic Pedigree Coefficient</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Genetic pedigree coefficient"><i class="fa-solid fa-dna"></i></span>
+                                    <input type="number" step="any" min="0" max="2.5" class="form-control" id="Genetic_Pedigree_Coefficient" name="Genetic_Pedigree_Coefficient" required placeholder="0 - 2.5">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Chronic_kidney_disease" class="form-label">Chronic Kidney Disease</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Chronic kidney disease"><i class="fa-solid fa-kidneys"></i></span>
+                                    <select class="form-select" id="Chronic_kidney_disease" name="Chronic_kidney_disease" required>
+                                        <option value="">Select...</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Adrenal_and_thyroid_disorders" class="form-label">Adrenal and Thyroid Disorders</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Adrenal and thyroid disorders"><i class="fa-solid fa-thumbs-down"></i></span>
+                                    <select class="form-select" id="Adrenal_and_thyroid_disorders" name="Adrenal_and_thyroid_disorders" required>
+                                        <option value="">Select...</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Family_History" class="form-label">Family History of Hypertension</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Family history of hypertension"><i class="fa-solid fa-users"></i></span>
+                                    <select class="form-select" id="Family_History" name="Family_History" required>
+                                        <option value="">Select...</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Diabetes" class="form-label">Diabetes</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" title="Diabetes diagnosis"><i class="fa-solid fa-syringe"></i></span>
+                                    <select class="form-select" id="Diabetes" name="Diabetes" required>
+                                        <option value="">Select...</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg shadow">Predict</button>
+            </div>
+        </form>
+        <div class="loading">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Processing your data...</p>
+        </div>
+        <div class="result-card">
+            <div class="alert" role="alert">
+                <h4 class="alert-heading">Prediction Result</h4>
+                <p id="predictionMessage"></p>
+                <hr>
+                <p class="mb-0">Probability: <span id="probability"></span></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Enable tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            document.querySelector('.loading').style.display = 'block';
+            document.querySelector('.result-card').classList.remove('show');
+            const formData = {};
+            const form = e.target;
+            for (const element of form.elements) {
+                if (element.name) {
+                    formData[element.name] = element.value;
+                }
+            }
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    const resultCard = document.querySelector('.result-card');
+                    const alert = resultCard.querySelector('.alert');
+                    const message = document.getElementById('predictionMessage');
+                    const probability = document.getElementById('probability');
+                    alert.className = `alert ${result.prediction === 1 ? 'alert-danger' : 'alert-success'}`;
+                    message.textContent = result.message;
+                    probability.textContent = `${(result.probability * 100).toFixed(2)}%`;
+                    resultCard.classList.add('show');
+                } else {
+                    throw new Error(result.error || 'Prediction failed');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                document.querySelector('.loading').style.display = 'none';
+            }
+        });
+        // Hide result card when any input changes
+        document.querySelectorAll('#predictionForm input, #predictionForm select').forEach(el => {
+            el.addEventListener('input', () => {
+                document.querySelector('.result-card').classList.remove('show');
+            });
+        });
+    </script>
+</body>
+</html> 
