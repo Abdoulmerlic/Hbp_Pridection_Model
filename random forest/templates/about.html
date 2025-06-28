@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - MediCare Hospital</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c5aa0;
+            --secondary-color: #4a90e2;
+            --accent-color: #e74c3c;
+            --light-blue: #e8f4fd;
+            --dark-blue: #1a365d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 8rem 0 4rem 0;
+            margin-top: 76px;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .content-section {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .mission-vision {
+            background: var(--light-blue);
+            padding: 4rem 0;
+        }
+
+        .mission-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            height: 100%;
+            text-align: center;
+        }
+
+        .mission-icon {
+            font-size: 4rem;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .team-section {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .team-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--secondary-color);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .timeline-content {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            width: 45%;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 0;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 55%;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        .footer {
+            background: var(--dark-blue);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            .page-header {
+                padding: 6rem 0 3rem 0;
+                margin-top: 66px;
+            }
+            .timeline::before {
+                left: 20px;
+            }
+            .timeline-content {
+                width: calc(100% - 50px);
+                margin-left: 50px !important;
+            }
+            .timeline-dot {
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-hospital me-2"></i>MediCare Hospital
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/predictor">BP Predictor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">About MediCare Hospital</h1>
+            <p class="page-subtitle">Leading the future of healthcare through innovation and compassion</p>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="mission-vision">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-4 fw-bold text-primary mb-3">Our Mission & Vision</h2>
+                    <p class="lead text-muted">Committed to excellence in healthcare delivery</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="mission-card">
+                        <div class="mission-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>Our Mission</h3>
+                        <p class="text-muted">To provide exceptional healthcare services through innovative technology, compassionate care, and evidence-based medicine. We strive to improve the health and well-being of our community by delivering personalized, accessible, and high-quality medical care.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mission-card">
+                        <div class="mission-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Our Vision</h3>
+                        <p class="text-muted">To be the leading healthcare institution that sets the standard for medical excellence, technological innovation, and patient-centered care. We envision a future where advanced AI technology and human expertise work together to provide the best possible health outcomes for every patient.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story -->
+    <section class="content-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="display-5 fw-bold text-primary mb-4">Our Story</h2>
+                    <p class="lead mb-4">Founded in 2010, MediCare Hospital has been at the forefront of medical innovation and patient care excellence.</p>
+                    <p class="text-muted mb-4">What started as a small community hospital has grown into a comprehensive healthcare institution that serves thousands of patients annually. Our commitment to integrating cutting-edge technology with compassionate care has made us a trusted name in healthcare.</p>
+                    <p class="text-muted">Today, we continue to push the boundaries of what's possible in healthcare, using advanced AI and machine learning to provide more accurate diagnoses and personalized treatment plans.</p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="text-center">
+                        <i class="fas fa-hospital" style="font-size: 15rem; color: var(--secondary-color); opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="mission-vision">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-4 fw-bold text-primary mb-3">Our Journey</h2>
+                    <p class="lead text-muted">Milestones that shaped our success</p>
+                </div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>2010</h4>
+                        <h5>Foundation</h5>
+                        <p>MediCare Hospital was established with a vision to revolutionize healthcare delivery.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>2015</h4>
+                        <h5>Technology Integration</h5>
+                        <p>Began integrating advanced medical technologies and electronic health records.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>2018</h4>
+                        <h5>AI Research Center</h5>
+                        <p>Established our AI research center to develop predictive healthcare solutions.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>2020</h4>
+                        <h5>BP Prediction System</h5>
+                        <p>Launched our revolutionary blood pressure prediction system using machine learning.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>2024</h4>
+                        <h5>Digital Transformation</h5>
+                        <p>Complete digital transformation with telemedicine and AI-powered diagnostics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-4 fw-bold text-primary mb-3">Our Leadership Team</h2>
+                    <p class="lead text-muted">Meet the experts behind our success</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h4>Dr. Sarah Johnson</h4>
+                        <p class="text-primary">Chief Medical Officer</p>
+                        <p class="text-muted">Leading our medical team with over 20 years of experience in cardiology and preventive medicine.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h4>Dr. Michael Chen</h4>
+                        <p class="text-primary">Chief Technology Officer</p>
+                        <p class="text-muted">Pioneering our AI and machine learning initiatives to advance healthcare technology.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4>Dr. Emily Rodriguez</h4>
+                        <p class="text-primary">Chief Research Officer</p>
+                        <p class="text-muted">Leading our research initiatives in predictive healthcare and patient outcomes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="mission-vision">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-4 fw-bold text-primary mb-3">Our Core Values</h2>
+                    <p class="lead text-muted">The principles that guide everything we do</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="mission-card">
+                        <div class="mission-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h5>Compassion</h5>
+                        <p class="text-muted">We treat every patient with empathy, respect, and understanding.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mission-card">
+                        <div class="mission-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h5>Excellence</h5>
+                        <p class="text-muted">We strive for the highest standards in medical care and service delivery.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mission-card">
+                        <div class="mission-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h5>Innovation</h5>
+                        <p class="text-muted">We embrace new technologies and methods to improve patient outcomes.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mission-card">
+                        <div class="mission-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5>Integrity</h5>
+                        <p class="text-muted">We maintain the highest ethical standards in all our practices.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5><i class="fas fa-hospital me-2"></i>MediCare Hospital</h5>
+                    <p>Providing advanced healthcare solutions through innovative technology and expert medical care.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h6>Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-white-50">Home</a></li>
+                        <li><a href="/predictor" class="text-white-50">BP Predictor</a></li>
+                        <li><a href="/about" class="text-white-50">About Us</a></li>
+                        <li><a href="/contact" class="text-white-50">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6>Contact Info</h6>
+                    <p class="text-white-50">
+                        <i class="fas fa-map-marker-alt me-2"></i>123 Medical Center Dr.<br>
+                        <i class="fas fa-phone me-2"></i>(555) 123-4567<br>
+                        <i class="fas fa-envelope me-2"></i>info@medicare.com
+                    </p>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2024 MediCare Hospital. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>This is a demonstration system for educational purposes.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

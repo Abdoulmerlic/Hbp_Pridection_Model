@@ -33,9 +33,21 @@ numerical_features = [
 
 @app.route('/')
 def home():
+    return render_template('landing.html')
+
+@app.route('/predictor')
+def predictor():
     return render_template('index.html', 
                          numerical_features=numerical_features,
                          categorical_features=categorical_features)
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -56,10 +68,38 @@ def predict():
         prediction = model.predict(processed_data)[0]
         probability = model.predict_proba(processed_data)[0][1]
         
+        # Convert probability to percentage
+        probability_percentage = probability * 100
+        
+        # Determine result based on percentage thresholds
+        if probability_percentage > 51:
+            result = "True"
+            risk_level = "High Risk"
+            message = "High risk of blood pressure abnormality detected"
+            alert_class = "alert-danger"
+            meter_position = 85  # Position for high risk on meter
+        elif probability_percentage < 49:
+            result = "False"
+            risk_level = "Low Risk"
+            message = "Low risk of blood pressure abnormality"
+            alert_class = "alert-success"
+            meter_position = 15  # Position for low risk on meter
+        else:
+            result = "Neutral"
+            risk_level = "Neutral Risk"
+            message = "Moderate risk - further monitoring recommended"
+            alert_class = "alert-warning"
+            meter_position = 50  # Position for neutral risk on meter
+        
         return jsonify({
             'prediction': int(prediction),
             'probability': float(probability),
-            'message': 'High risk of blood pressure abnormality' if prediction == 1 else 'Low risk of blood pressure abnormality'
+            'probability_percentage': round(probability_percentage, 2),
+            'result': result,
+            'risk_level': risk_level,
+            'message': message,
+            'alert_class': alert_class,
+            'meter_position': meter_position
         })
     
     except Exception as e:
