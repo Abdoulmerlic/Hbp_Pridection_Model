@@ -106,7 +106,7 @@ def evaluate_model(model, X_test, y_test):
     plt.title('Confusion Matrix')
     plt.ylabel('True Label')
     plt.xlabel('Predicted Label')
-    plt.savefig('random forest/confusion_matrix_rf.png')
+    plt.savefig('confusion_matrix.png')
     plt.close()
     
     return accuracy, precision, recall, f1
@@ -130,7 +130,7 @@ def plot_feature_importance(model, feature_names):
     plt.title('Feature Importance')
     plt.xlabel('Importance Score')
     plt.tight_layout()
-    plt.savefig('random forest/feature_importance_rf.png')
+    plt.savefig('feature_importance.png')
     plt.close()
 
 def main():
